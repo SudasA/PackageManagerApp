@@ -6,59 +6,46 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static android.text.format.Formatter.formatFileSize;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    private WordListAdapter mAdapter;
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
-
-
-
-      //  final TextView nameApp = (TextView) findViewById(R.id.text);
-       // final TextView hashApp = (TextView) findViewById(R.id.hash);
-        //LinkedList<String> mWordList = new LinkedList<>();
+        String appHash;
         List<AppInfo> appName = getApps();
-        for(int i = 0; i < appName.size(); i ++){
-            String appHash = "";
-            String appText = "";
-
-            appText = appName.get(i).getApplicationLabelem();
+        LinkedList<String> appHashes = new LinkedList<>();
+        for(int i = 0; i < appName.size(); i ++) {
             try {
                 appHash = getSignatureHash(getApplicationContext(), appName.get(i).getPackageName());
+                appHashes.add("Hash = " + appHash);
             } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
+        }
 
             // Get a handle to the RecyclerView.
-            mRecyclerView = findViewById(R.id.recyclerview);
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerview);
 // Create an adapter and supply the data to be displayed.
-            mAdapter = new WordListAdapter(this, appName);
+        WordListAdapter mAdapter = new WordListAdapter(this, appName, appHashes);
 // Connect the adapter with the RecyclerView.
             mRecyclerView.setAdapter(mAdapter);
 // Give the RecyclerView a default layout manager.
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        }
+
     }
 
     private List<AppInfo> getApps() {
@@ -121,10 +108,6 @@ public class MainActivity extends AppCompatActivity {
             v=bytes[j] & 0xFF;
             hexChars[j * 3]=hexArray[v / 16];
             hexChars[j * 3 + 1]=hexArray[v % 16];
-
-           // if (j < bytes.length - 1) {
-          //      hexChars[j * 3 + 2]=':';
-          //  }
         }
         return new String(hexChars);
     }
