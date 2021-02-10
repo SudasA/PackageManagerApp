@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
-        final TextView nameApp = (TextView) findViewById(R.id.text);
-        final TextView hashApp = (TextView) findViewById(R.id.hash);
+      //  final TextView nameApp = (TextView) findViewById(R.id.text);
+       // final TextView hashApp = (TextView) findViewById(R.id.hash);
 
         List<AppInfo> appName = getApps();
         for(int i = 0; i < appName.size(); i ++){
@@ -39,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            nameApp.setText(appText);
-            hashApp.setText(appHash);
+           // nameApp.setText(appText);
+          //  hashApp.setText(appHash);
         }
     }
 
