@@ -8,6 +8,8 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.security.MessageDigest;
@@ -19,13 +21,22 @@ import static android.text.format.Formatter.formatFileSize;
 
 public class MainActivity extends AppCompatActivity {
 
+    private RecyclerView mRecyclerView;
+    private WordListAdapter mAdapter;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
+
+
+
       //  final TextView nameApp = (TextView) findViewById(R.id.text);
        // final TextView hashApp = (TextView) findViewById(R.id.hash);
-
+        //LinkedList<String> mWordList = new LinkedList<>();
         List<AppInfo> appName = getApps();
         for(int i = 0; i < appName.size(); i ++){
             String appHash = "";
@@ -38,8 +49,15 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-           // nameApp.setText(appText);
-          //  hashApp.setText(appHash);
+            // Get a handle to the RecyclerView.
+            mRecyclerView = findViewById(R.id.recyclerview);
+// Create an adapter and supply the data to be displayed.
+            mAdapter = new WordListAdapter(this, appName);
+// Connect the adapter with the RecyclerView.
+            mRecyclerView.setAdapter(mAdapter);
+// Give the RecyclerView a default layout manager.
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         }
     }
 
